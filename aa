@@ -1,0 +1,13 @@
+// add custom channel variable
+        if (channel && channel->session && channel->session->inv_session && channel->session->inv_session->dlg)
+        {
+                pjsip_dialog *dlg = channel->session->inv_session->dlg;
+                char buf[512];
+                char buf_[64];
+                int n_ =  pj_strlen(&dlg->call_id->id);
+                int n__ = snprintf(buf_, 64, "%.*s", (int) pj_strlen(&dlg->call_id->id), pj_strbuf(&dlg->call_id->id));
+
+                // ast_log (AST_LOG_WARNING, "NEW CHAN --> %s %d %d | %lx\n", buf_, n_, n__, sizeof (buf));
+
+                if (n__>0)      pbx_builtin_setvar_helper (chan, "SIPHDRCALLID", ast_get_encoded_str(buf_, buf, sizeof(buf) ));
+        }
